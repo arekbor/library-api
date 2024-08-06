@@ -4,7 +4,8 @@ namespace App\Dto;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class RegisterUserDto {
+final class RegisterUserDto 
+{
     #[Assert\Email]
     #[Assert\NotBlank]
     #[Assert\NotNull]

@@ -5,7 +5,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\MappedSuperclass]
-abstract class BaseEntity {
+abstract class BaseEntity 
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

@@ -7,18 +7,21 @@ use App\Entity\User;
 use AutoMapper\AutoMapper;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class UserService {
-    protected $autoMapper;
-    protected $entityManager;
-    protected $identityService;
+final class UserService 
+{
+    private $autoMapper;
+    private $entityManager;
+    private $identityService;
 
-    public function __construct(EntityManagerInterface $entityManager, IdentityService $identityService) {
+    public function __construct(EntityManagerInterface $entityManager, IdentityService $identityService) 
+    {
         $this->autoMapper = AutoMapper::create();
         $this->entityManager = $entityManager;
         $this->identityService = $identityService;
     }
 
-    public function register(RegisterUserDto $dto) : void {
+    public function register(RegisterUserDto $dto) : void 
+    {
         $user = $this->autoMapper->map($dto, User::class);
 
         $hash = $this->identityService->hashPassword($dto->password);

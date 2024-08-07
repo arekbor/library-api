@@ -6,9 +6,7 @@ use App\Dto\AddBookDto;
 use App\Entity\User;
 use App\Service\BookService;
 use JMS\Serializer\SerializerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,13 +16,11 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 final class BookController extends AbstractController
 {
     private $bookService;
-    private $logger;
     private $serializer;
 
-    public function __construct(BookService $bookService, LoggerInterface $logger, SerializerInterface $serializer) 
+    public function __construct(BookService $bookService, SerializerInterface $serializer) 
     {
         $this->bookService = $bookService;
-        $this->logger = $logger;
         $this->serializer = $serializer;
     }
 

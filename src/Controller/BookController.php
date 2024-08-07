@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Dto\AddBookDto;
 use App\Entity\User;
 use App\Service\BookService;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,17 +16,36 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 final class BookController extends AbstractController
 {
     private $bookService;
+    private $serializer;
 
-    public function __construct(BookService $bookService) 
+    public function __construct(BookService $bookService, SerializerInterface $serializer) 
     {
         $this->bookService = $bookService;
+        $this->serializer = $serializer;
     }
 
     #[Route('/books', name: 'add_book', methods: ['POST'])]
-    public function register(#[MapRequestPayload] AddBookDto $dto, #[CurrentUser] User $user) : Response 
+    public function add(#[MapRequestPayload] AddBookDto $dto, #[CurrentUser] User $user) : Response 
     {
         $this->bookService->add($dto, $user);
         
         return new Response(null, Response::HTTP_CREATED);
+    }
+
+    #[Route('/books/{bookId}', name: 'remove_book', methods: ['DELETE'])]
+    public function remove(int $bookId, #[CurrentUser] User $user) : Response 
+    {
+        $this->bookService->remove($bookId, $user);
+        
+        return new Response(null, Response::HTTP_OK);
+    }
+
+    #[Route('/books/{page}/{limit}', name: 'list_books', methods: ['GET'])]
+    public function list(int $page, int $limit, #[CurrentUser] User $user) 
+    {
+        $pagination = $this->bookService->paginateList($page, $limit, $user);
+        $result = $this->serializer->serialize($pagination, 'json');
+
+        return new Response($result);
     }
 }

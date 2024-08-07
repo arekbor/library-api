@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
-final class Book extends BaseEntity
+class Book extends BaseEntity
 {
     #[ORM\Column(type: Types::TEXT)]
     private ?string $title = null;
